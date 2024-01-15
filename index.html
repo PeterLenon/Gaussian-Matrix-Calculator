@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gaussian Matrix Calculator</title>
+</head>
+<body>
+    <h2>Gaussian Matrix Calculator</h2>
+    <h3>Matrix Size (row x col)</h3>
+    <label>Row:</label>
+    <input type="number" id="rows" value="3" min="2" max="10">
+    <label >Col:</label>
+    <input type="number" id="cols" value="4" min="3" max="11">
+
+    <button onclick="generateMatrixInput()">Generate Matrix</button>
+    <div>
+        <button onclick="undo()">Undo</button>
+        <button onclick="redo()">Redo</button>
+    </div>
+    <div id="matrixInput"></div>
+    <div id="controlPanel">
+        <h4>Tabs</h4>
+        <button id="swap" onclick="displaySwapRows()">1</button>
+        <button id="multiplyRow" onclick="displayMultiplyRows()">2</button>
+        <button id="addTwoRows" onclick="displayAddTwoRows()">3</button>
+        <div id="currentTab"></div>
+    </div>
+
+    
+    <h3>Result:</h3>
+    <button onclick="calculateGaussian()">REF</button>
+    <br>
+    <br>
+    <button onclick="calculateReducedGaussian()">RREF</button>
+    <div id="result"></div>
+
+    <script>
+        window.onload = displaySwapRows();
+        function generateMatrixInput() {
+            const rows = document.getElementById("rows").value;
+            const cols = document.getElementById("cols").value;
+            let matrixHtml = '<table border="1" id="matrix">';
+            for (let i = 0; i < rows; i++) {
+                matrixHtml += '<tr>';
+                for (let j = 0; j < cols; j++) {
+                    matrixHtml += `<td><input type='number' id='cell-${i}-${j}' value='0'></td>`;
+                }
+                matrixHtml += '</tr>';
+            }
+            matrixHtml += '</table>';
+            document.getElementById("matrixInput").innerHTML = matrixHtml;
+        }
+
+        function calculateGaussian() {
+            const rows = document.getElementById("rows").value;
+            const cols = document.getElementById("cols").value;
+            let matrix = [];
+            for (let i = 0; i < rows; i++) {
+                matrix[i] = [];
+                for (let j = 0; j < cols; j++) {
+                    matrix[i][j] = parseFloat(document.getElementById(`cell-${i}-${j}`).value);
+                }
+            }
+
+            gaussianElimination(matrix, rows, cols);
+
+            let resultHtml = '<table border="1">';
+            for (let i = 0; i < rows; i++) {
+                resultHtml += '<tr>';
+                for (let j = 0; j < cols; j++) {
+                    resultHtml += `<td>${matrix[i][j].toFixed(2)}</td>`;
+                }
+                resultHtml += '</tr>';
+            }
+            resultHtml += '</table>';
+
+            document.getElementById("result").innerHTML = resultHtml;
+        }
+
+        function calculateReducedGaussian(){
+            const rows = document.getElementById("rows").value;
+            const cols = document.getElementById("cols").value;
+            let matrix = [];
+            for (let i = 0; i < rows; i++) {
+                matrix[i] = [];
+                for (let j = 0; j < cols; j++) {
+                    matrix[i][j] = parseFloat(document.getElementById(`cell-${i}-${j}`).value);
+                }
+            }
+
+            gaussianElimination(matrix, rows, cols);
+            reducedGaussianElimination(matrix, rows, cols);
+
+            let resultHtml = '<table border="1">';
+            for (let i = 0; i < rows; i++) {
+                resultHtml += '<tr>';
+                for (let j = 0; j < cols; j++) {
+                    resultHtml += `<td>${matrix[i][j].toFixed(2)}</td>`;
+                }
+                resultHtml += '</tr>';
+            }
+            resultHtml += '</table>';
+
+            document.getElementById("result").innerHTML = resultHtml;
+        }
+
+        function gaussianElimination(matrix, rows, cols) {
+            for(let col = 0; col < cols-1; col++){
+                for(let row = col+1; row< rows; row++){
+                    let factor = matrix[row][col]/matrix[col][col];
+                    for(let c = col; c< cols; c++){
+                        matrix[row][c] -= (factor * matrix[col][c]);
+                    }
+                }
+            }
+        }
+
+        function reducedGaussianElimination(matrix, rows, cols){
+            for(let r = 0; r < rows; r++){
+                let factor = matrix[r][r];
+                for(let c = 0; c < cols; c++){
+                    matrix[r][c] /= factor;
+                }
+            }
+        }
+
+        function displaySwapRows(){
+            let header = "<h5>Swap Rows</h5>";
+            let row1 = "<label>Row</label> <input type='number' id='swapRow1' value='1' min='1'>";
+            let row2 = "<br><label>Row</label> <input type='number' id='swapRow2' value='2' min='2'>";
+            let submit = "<br><br> <button id='submit' onclick='swapRows()'>Submit</button>";
+            let tab = header + row1 + row2 + submit;
+            document.getElementById('currentTab').innerHTML = tab;
+        }
+
+        function displayMultiplyRows(){
+            let header = "<h5> Multiply Row </h5>";
+            let scalar = "<label>Scalar</label> <input type='number' id='scalar' value='1'>";
+            let rowChoice = "<label>Row</label> <input type='number' id='rowChoice' value='1' min='1'>";
+            let submit = "<br><br> <button id='submit' onclick='multiplyRows()'>Submit </button>";
+            let tab = header + scalar + rowChoice + submit;
+            document.getElementById('currentTab').innerHTML = tab;
+        }
+
+        function displayAddTwoRows(){
+            let header = "<h5> Add Rows </h5>";
+            let toChange = "<label>Change Row</label> <input type='number' id='targetRow' value='1' min='1'>";
+            let r1 = "<br> <label>Scalar</label> <input type='number' id='scalarRow1' value='1'> <label>Row</label><input type='number' id='addRow1' value='1' min='1'>";
+            let r2 = "<br> <label>Scalar</label> <input type='number' id='scalarRow2' value='1'> <label>Row</label><input type='number' id='addRow2' value='1' min='1'>";
+            let submit = "<br><br> <button id='submit' onclick='addTwoRows()'>Submit </button>";
+            let tab = header + toChange + r1 + r2 + submit;
+            document.getElementById('currentTab').innerHTML = tab;
+        }
+
+        function swapRows(){
+            let r1 = Math.min(document.getElementById('swapRow1').value, document.getElementById('swapRow2').value) -1;
+            let r2 = Math.max(document.getElementById('swapRow1').value, document.getElementById('swapRow2').value) -1;
+            let colSize = document.getElementById('cols').value;
+
+            for(let i = 0; i < colSize; i++){
+                let cloneR1 = document.getElementById(`cell-${r1}-${i}`).value;
+                document.getElementById(`cell-${r1}-${i}`).value = document.getElementById(`cell-${r2}-${i}`).value;
+                document.getElementById(`cell-${r2}-${i}`).value = cloneR1;
+            }
+        }
+
+        function multiplyRows(){
+            let maxCols = document.getElementById('cols').value;
+            let scalar = document.getElementById('scalar').value;
+            let row = document.getElementById('rowChoice').value -1;
+            for(var i =0; i <maxCols; i++){
+                document.getElementById(`cell-${row}-${i}`).value *= scalar;
+            }
+        }
+
+        function addTwoRows(){
+            let target = document.getElementById('targetRow').value-1;
+            let r1Scalar = document.getElementById('scalarRow1').value;
+            let r2Scalar = document.getElementById('scalarRow2').value;
+            let r1 = document.getElementById('addRow1').value-1;
+            let r2 = document.getElementById('addRow2').value-1;
+            let colSize = document.getElementById('cols').value;
+            for(var i = 0; i < colSize; i++){
+                document.getElementById(`cell-${target}-${i}`).value = (r1Scalar*document.getElementById(`cell-${r1}-${i}`).value) + (r2Scalar * document.getElementById(`cell-${r2}-${i}`).value);
+            }
+        }
+    
+
+        function undo(){
+        }
+
+        function redo(){
+        }
+    </script>
+</body>
+</html>
