@@ -4,7 +4,7 @@
     <title>Gaussian Matrix Calculator</title>
 </head>
 <body>
-    <h2>Gaussian Matrix Calculator</h2>
+    <h2 style="">Gaussian Matrix Calculator</h2>
     <h3>Matrix Size (row x col)</h3>
     <label>Row:</label>
     <input type="number" id="rows" value="3" min="2" max="10">
@@ -142,8 +142,8 @@
 
         function displayMultiplyRows(){
             let header = "<h5> Multiply Row </h5>";
-            let scalar = "<label>Scalar</label> <input type='number' id='scalar' value='1'>";
-            let rowChoice = "<label>Row</label> <input type='number' id='rowChoice' value='1' min='1'>";
+            let scalar = "<div style='display:flex'> <label>Scalar</label> <input type='number' id='scalar' value='1'>";
+            let rowChoice = "<label>Row</label> <input type='number' id='rowChoice' value='1' min='1'> </div>";
             let submit = "<br><br> <button id='submit' onclick='multiplyRows()'>Submit </button>";
             let tab = header + scalar + rowChoice + submit;
             document.getElementById('currentTab').innerHTML = tab;
@@ -219,6 +219,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             var myDiv = document.getElementById("panels");
             myDiv.style.display = "flex";
+            myDiv.style.justifyContent="center";
         });
 
     </script>
