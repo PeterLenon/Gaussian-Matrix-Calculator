@@ -16,25 +16,33 @@
         <button onclick="undo()">Undo</button>
         <button onclick="redo()">Redo</button>
     </div>
-    <div id="matrixInput"></div>
-    <div id="controlPanel">
-        <h4>Tabs</h4>
-        <button id="swap" onclick="displaySwapRows()">1</button>
-        <button id="multiplyRow" onclick="displayMultiplyRows()">2</button>
-        <button id="addTwoRows" onclick="displayAddTwoRows()">3</button>
-        <div id="currentTab"></div>
+    <div id="matrixInput" style="margin: 1%;"></div>
+    <br>
+    <div id="panels">
+        <div id="controlPanel">
+            <h4>Tabs</h4>
+            <button id="swap" onclick="displaySwapRows()">1</button>
+            <button id="multiplyRow" onclick="displayMultiplyRows()">2</button>
+            <button id="addTwoRows" onclick="displayAddTwoRows()">3</button>
+            <div id="currentTab"></div>
+        </div>
+        <br>
+        <div id="resultPanel">
+            <h4>Result:</h4>
+            <div id="result"></div>
+                <br>
+                <button onclick="calculateGaussian()">REF</button>
+                <br>
+                <br>
+            <button onclick="calculateReducedGaussian()">RREF</button>
+        </div>
     </div>
-
-    
-    <h3>Result:</h3>
-    <button onclick="calculateGaussian()">REF</button>
-    <br>
-    <br>
-    <button onclick="calculateReducedGaussian()">RREF</button>
-    <div id="result"></div>
 
     <script>
         window.onload = displaySwapRows();
+        window.onload = generateMatrixInput();
+        window.onload = calculateGaussian();
+
         function generateMatrixInput() {
             const rows = document.getElementById("rows").value;
             const cols = document.getElementById("cols").value;
@@ -190,6 +198,27 @@
 
         function redo(){
         }
+        document.addEventListener("DOMContentLoaded", function() {
+            var myDiv = document.getElementById("controlPanel");
+            myDiv.style.border = "2px solid black";
+            myDiv.style.width = "30%";
+            myDiv.style.padding = "1%";
+            myDiv.style.margin = "1%";
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var myDiv = document.getElementById("resultPanel");
+            myDiv.style.border = "2px solid black";
+            myDiv.style.width = "30%";
+            myDiv.style.padding = "1%";
+            myDiv.style.margin = "1%";
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var myDiv = document.getElementById("panels");
+            myDiv.style.display = "flex";
+        });
+
     </script>
 </body>
 </html>
