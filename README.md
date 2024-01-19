@@ -21,8 +21,6 @@ We welcome contributions from the community! If you'd like to contribute to Trad
 4. Push to the branch: `git push origin feature/your-feature-name`.
 5. Open a pull request explaining your changes.
 
-Please ensure your pull request adheres to our [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guidelines](CONTRIBUTING.md).
-
 ## Contact
 goshomip@gmail.com or 
 https://web.groupme.com/contact/103653571/4OWCyvi9
