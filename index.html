@@ -37,6 +37,10 @@
             <button onclick="calculateReducedGaussian()">RREF</button>
         </div>
     </div>
+    <br>
+    <div id="copyRight">
+        <p>&copy;JSU Center for Innovation</p>
+    </div>
 
     <script>
         window.onload = displaySwapRows();
@@ -220,6 +224,11 @@
             var myDiv = document.getElementById("panels");
             myDiv.style.display = "flex";
             myDiv.style.justifyContent="center";
+        });
+
+        docoment.addEventListener("DOMContentLoaded", function(){
+            var copyRightDiv = document.getElementById('copyRight');
+            copyRightDiv.style.justifyContent = "center";
         });
 
     </script>
